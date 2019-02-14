@@ -47,7 +47,7 @@ httpProxy.on('proxyReq', onProxyReq);
 
 const doProxy = (target, req, res) => {
   var options = {
-    target: (/^https?:\/\/(.+)/g).exec(target)[2]
+    target: target
   };
   if (target.match(/^https/g)!=null) {
     httpsProxy.web(req, res, options);
