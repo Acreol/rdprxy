@@ -2,7 +2,7 @@ const proxy = require('http-proxy');
 const https = require('https');
 const http = require('http');
 const { URL } = require('url');
-
+console.log('hi')
 if (!process.env.ACCESS_KEY) {
   throw new Error('Configuration error! Make sure ACCESS_KEY is defined in your process environment.');
 }
