@@ -49,9 +49,9 @@ const doProxy = (target, req, res) => {
   var options = {
     target: (/^https?:\/\/(.+)/g).exec(target)[2]
   };
-  if (target.host.match(/^https/g)!=null) {
+  if (target.match(/^https/g)!=null) {
     httpsProxy.web(req, res, options);
-  } else if (target.host.match(/^http/g)!=null) {
+  } else if (target.match(/^http/g)!=null) {
     httpProxy.web(req, res, options);
   } else {
     throw new Error(`Do proxy error: Invalid protocol ${proto}`);
@@ -66,6 +66,14 @@ server.on('request', (req, res) => {
     if (req.headers['proxy-access-key'] === ACCESS_KEY) {
       const requestedTarget = req.headers['proxy-target'];
       if (requestedTarget) {
+        let parsedTarget;
+        try {
+          parsedTarget = new URL(requestedTarget);
+        } catch (e) {
+          res.writeHead(400, {'Content-Type': 'text/plain'});
+          res.end('Invalid target');
+          return;
+        }
         doProxy(requestedTarget, req, res);
       } else {
         res.writeHead(400, {'Content-Type': 'text/plain'});
